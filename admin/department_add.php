@@ -7,7 +7,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
    $update_id = db_sanitize($_GET['id']);
    $department_sql = $conn->query("SELECT * FROM `zuraud_department` WHERE `id`='{$update_id}'");
    if ($department_sql && $department_sql->num_rows > 0) {
-      $department = $department_sql->fetch_assoc();
+      $department = $department_sql->fetch_assoc(); 
    }
 }
 ?>

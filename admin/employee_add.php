@@ -136,7 +136,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                </div>
 
                <!-- Shift -->
-               <div class="mb-3 col-md-6">
+               <div class="mb-3 col-md-4">
                   <?php
                   $shift_sql = $conn->query("SELECT id, name FROM `zuraud_shift`");
 
@@ -156,6 +156,15 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
                      }
                      ?>
                   </select>
+               </div>
+
+               <div class="mb-3 col-md-4">
+                  <label for="device_sr" class="form-label">Machine Sr. No</label>
+                  <input type="text" class="form-control" id="device_sr" name="device_sr" value="<?= @$emp['device_sr'] ?>">
+               </div>
+               <div class="mb-3 col-md-4">
+                  <label for="device_user" class="form-label">User Id in machine</label>
+                  <input type="text" class="form-control" id="device_user" name="device_user" value="<?= @$emp['device_user'] ?>">
                </div>
 
 
