@@ -700,6 +700,102 @@ $(document).on("submit", "#employee_add", function (e) {
 });
 
 
+$(document).on("submit", "#import_emp", function (e) {
+  e.preventDefault();
+  $("#sub_btn").prop("disabled", true);
+  $(".error-span").text("");
+  const formData = new FormData(this);
+  $.ajax({
+    url: "./config/request/employee_import.php",
+    type: "POST",
+    data: formData,
+    contentType: false,
+    processData: false,
+    cache: false,
+    success: function (res) {
+      console.log(res);
+
+      $("#sub_btn").prop("disabled", false);
+      try {
+        let json = JSON.parse(res);
+        if (json.status === 200 || json.status === 201) {
+          setTimeout(() => window.location.reload(), 1000);
+          Toastify({
+            text: "✅" + json.message,
+            duration: 3000,
+            style: {
+              background: "#ffffff", // white background
+              color: " #28a745", // red text
+              zIndex: 9999,
+              border: "1px solid #28a745",
+              fontWeight: "bold",
+              fontSize: "16px",
+              pdding: "10px 20px",
+            },
+          }).showToast();
+        } else {
+          json.key && $(`.${json.key}`).text();
+          Toastify({
+            text: "❌" + json.message,
+            duration: 3000,
+            style: {
+              background: "#ffffff", // white background
+              color: " #FA5252", // red text
+              zIndex: 9999,
+              border: "1px solid #FF0000",
+              fontWeight: "bold",
+            },
+          }).showToast();
+        }
+      } catch {
+        Toastify({
+          text: "❌ An error occurred. Please try again.",
+          duration: 3000,
+          style: {
+            background: "#ffffff", // white background
+            color: "#FA5252", // red text
+            zIndex: 9999,
+            border: "1px solid #FF0000",
+            fontWeight: "bold",
+          },
+        }).showToast();
+      }
+    },
+    error: function (jqXHR) {
+      $("#sub_btn").prop("disabled", false);
+      // formStop();
+      try {
+        let json = JSON.parse(jqXHR.responseText);
+        console.log(json);
+        if ([400, 401, 500].includes(json.status)) {
+          Toastify({
+            text: "❌ " + json.message,
+            duration: 3000,
+            style: {
+              background: "#ffffff", // white background
+              color: "#FA5252", // red text
+              zIndex: 9999,
+              fontWeight: "bold",
+            },
+          }).showToast();
+        }
+      } catch {
+        Toastify({
+          text: "❌" + "An error occurred while submitting the form. Please try again later.",
+          duration: 3000,
+          style: {
+            background: "#ffffff", // white background
+            color: "#FA5252", // red text
+            zIndex: 9999,
+            fontWeight: "bold",
+          },
+        }).showToast();
+      }
+    },
+  });
+});
+
+
 
 
 

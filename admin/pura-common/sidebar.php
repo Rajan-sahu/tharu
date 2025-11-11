@@ -73,7 +73,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= ($current_page =='employee_list.php' || $current_page=='employee_add.php')? 'active':''  ?>" aria-current="page" href="./employee_list.php">
+                    <a class="nav-link <?= ($current_page =='employee_list.php' || $current_page=='employee_add.php' || $current_page=='import_emp.php')? 'active':''  ?>" aria-current="page" href="./employee_list.php">
                         <i class="fa-sharp fa-solid fa-user-tie"></i>
                         <span class="item-name">Employees</span>
                     </a>

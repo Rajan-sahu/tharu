@@ -16,9 +16,12 @@ require_once('./pura-common/header.php');
             </button>
          </div>
 
+         <div><a href="import_emp.php" class="btn btn-sm btn-primary">
+            <i class="fa-sharp fa-solid fa-upload"></i> Import 
+         </a>
          <a href="employee_add.php" class="btn btn-sm btn-primary">
             <i class="fa-sharp fa-solid fa-plus"></i> Add New
-         </a>
+         </a></div>
       </div>
 
       <!-- Hidden Filter Form -->
@@ -174,7 +177,7 @@ require_once('./pura-common/header.php');
                            <td><?= $emp['mobile_no'] ?></td>
                            <td><?= (!empty($emp['dob'])) ? date('d-m-Y', strtotime($emp['dob'])) : '' ?></td>
                            <td><?= (!empty($emp['doj'])) ? date('d-m-Y', strtotime($emp['doj'])) : '' ?></td>
-                           <td><?= (!empty($emp['doe'])) ? date('d-m-Y', strtotime($emp['doe'])) : '' ?></td>
+                           <td><?= (!empty($emp['doe']) && $emp['doe'] !== '0000-00-00') ? date('d-m-Y', strtotime($emp['doe'])) : '' ?></td>
                            <td class="text-sm">
                               <strong>Station:</strong> <?= $emp['station'] ?><br>
                               <strong>Department:</strong> <?= $emp['department'] ?><br>
