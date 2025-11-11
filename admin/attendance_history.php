@@ -295,7 +295,7 @@ $month = (isset($_POST['month']) && !empty($_POST['month'])) ? $_POST['month'] :
 include_once('./pura-common/footer.php');
 ?>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 
 <script>
 document.getElementById("exportExcel").addEventListener("click", function () {

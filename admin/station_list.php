@@ -28,6 +28,7 @@ require_once('./pura-common/header.php');
             }
          }
          if (!empty($stations)) { ?>
+            <button id="exportStations" class="btn btn-success mb-2">Export Stations to Excel</button>
             <div class="table-responsive">
                <table id="stationTable" class="table table-bordered table-striped align-middle">
                   <thead class="table-light">
@@ -81,16 +82,40 @@ include_once('./pura-common/footer.php');
 
 <!-- DataTable Init -->
 <script>
-$(document).ready(function () {
-    $('#stationTable').DataTable({
-        pageLength: 10,        // default rows per page
-        lengthMenu: [5, 10, 25, 50, 100],
-        ordering: true,        // enable column sorting
-        searching: true,       // enable search bar
-        language: {
+   $(document).ready(function() {
+      $('#stationTable').DataTable({
+         pageLength: 10, // default rows per page
+         lengthMenu: [5, 10, 25, 50, 100],
+         ordering: true, // enable column sorting
+         searching: true, // enable search bar
+         language: {
             search: "_INPUT_",
             searchPlaceholder: "Search stations..."
-        }
-    });
-});
+         }
+      });
+   });
+</script>
+
+
+<script>
+   const stationData = <?= json_encode($stations); ?>;
+   document.getElementById("exportStations").addEventListener("click", function() {
+
+      // Select required data: id, station_name, address
+      const refinedData = stationData.map(item => ({
+         ID: item.id,
+         Station_Name: item.station_name,
+         Address: item.address
+      }));
+
+      // Convert JSON → Worksheet
+      const worksheet = XLSX.utils.json_to_sheet(refinedData);
+
+      // Create Workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Stations");
+
+      // Download Excel
+      XLSX.writeFile(workbook, "Stations_List.xlsx");
+   });
 </script>

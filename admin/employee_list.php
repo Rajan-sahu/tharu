@@ -151,6 +151,7 @@ require_once('./pura-common/header.php');
             }
          }
          if (!empty($employees)) { ?>
+            <button id="exportEmployees" class="btn btn-success mb-2">Export Employees to Excel</button>
             <div class="table-responsive">
                <table id="employeeTable" class="table table-bordered table-striped align-middle">
                   <thead class="table-light">
@@ -229,5 +230,35 @@ include_once('./pura-common/footer.php');
          $('#filterForm').slideToggle();
       });
 
+   });
+</script>
+<script>
+   const employeeData = <?= json_encode($employees); ?>;
+   console.log(employeeData);
+   document.getElementById("exportEmployees").addEventListener("click", function() {
+
+      // Select required data: id, station_name, address
+      const refinedData = employeeData.map(item => ({
+         Employee_Name: item.name,
+         Father_name: item.f_name,
+         Gender: item.gender,
+         DOB: item.dob,
+         DOJ: item.doj,
+         Mobile_NO: item.mobile_no,
+         Department: item.department,
+         Designation: item.designation,
+         Station: item.station,
+         Shift: item.shift,
+      }));
+
+      // Convert JSON → Worksheet
+      const worksheet = XLSX.utils.json_to_sheet(refinedData);
+
+      // Create Workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Employees");
+
+      // Download Excel
+      XLSX.writeFile(workbook, "Employees_List.xlsx");
    });
 </script>

@@ -25,6 +25,7 @@ require_once('./pura-common/header.php');
             }
          }
          if (!empty($designations)) { ?>
+         <button id="exportDesignations" class="btn btn-success mb-2">Export Designations to Excel</button>
             <div class="table-responsive">
                <table id="designationTable" class="table table-bordered table-striped table-hover">
                   <thead class="table-light">
@@ -84,4 +85,26 @@ $(document).ready(function () {
         }
     });
 });
+</script>
+
+<script>
+   const designationData = <?= json_encode($designations); ?>;
+   document.getElementById("exportDesignations").addEventListener("click", function() {
+
+      
+      const refinedData = designationData.map(item => ({
+         ID: item.id,
+         Designation_Name: item.title
+      }));
+
+      // Convert JSON → Worksheet
+      const worksheet = XLSX.utils.json_to_sheet(refinedData);
+
+      // Create Workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Designations");
+
+      // Download Excel
+      XLSX.writeFile(workbook, "Designation_List.xlsx");
+   });
 </script>

@@ -25,6 +25,7 @@ require_once('./pura-common/header.php');
             }
          }
          if (!empty($shifts)) { ?>
+         <button id="exportShifts" class="btn btn-success mb-2">Export Shift to Excel</button>
             <div class="table-responsive">
                <table id="shiftTable" class="table table-bordered table-striped table-hover">
                   <thead class="table-light">
@@ -88,4 +89,28 @@ $(document).ready(function () {
         }
     });
 });
+</script>
+
+<script>
+   const shiftData = <?= json_encode($shifts); ?>;
+   document.getElementById("exportShifts").addEventListener("click", function() {
+
+      
+      const refinedData = shiftData.map(item => ({
+         ID: item.id,
+         Shift_Name: item.name,
+         Start_time: item.start_time,
+         End_time: item.end_time
+      }));
+
+      // Convert JSON → Worksheet
+      const worksheet = XLSX.utils.json_to_sheet(refinedData);
+
+      // Create Workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Shifts");
+
+      // Download Excel
+      XLSX.writeFile(workbook, "Shifts_List.xlsx");
+   });
 </script>

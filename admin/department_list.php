@@ -25,6 +25,7 @@ require_once('./pura-common/header.php');
             }
          }
          if (!empty($departments)) { ?>
+            <button id="exportDepartment" class="btn btn-success mb-2">Export Departments to Excel</button>
             <div class="table-responsive">
                <table id="departmentTable" class="table table-bordered table-striped table-hover">
                   <thead class="table-light">
@@ -84,4 +85,24 @@ $(document).ready(function () {
         }
     });
 });
+</script>
+<script>
+   const departmentData = <?= json_encode($departments); ?>;
+   document.getElementById("exportDepartment").addEventListener("click", function() {
+      
+      const refinedData = departmentData.map(item => ({
+         ID: item.id,
+         Department_Name: item.title
+      }));
+
+      // Convert JSON → Worksheet
+      const worksheet = XLSX.utils.json_to_sheet(refinedData);
+
+      // Create Workbook
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Departments");
+
+      // Download Excel
+      XLSX.writeFile(workbook, "Department_List.xlsx");
+   });
 </script>
